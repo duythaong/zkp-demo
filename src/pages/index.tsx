@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useNetwork, useSwitchNetwork, useAccount, useBalance } from 'wagmi'
 import ConnectWallet from 'components/Connect/ConnectWallet'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useSignMessage } from 'wagmi'
 
 export default function Home() {
@@ -42,68 +41,15 @@ function Main() {
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: address,
   })
-  const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
-  const { openChainModal } = useChainModal()
   return (
     <main className={styles.main + ' space-y-6'}>
-      <div className="text-center">
-        <p className="font-medium">Dapp Starter Boilerplate by arisac.eth</p>
-        <p>
-          <a
-            href="https://github.com/arisac/dapp-starter"
-            target="_blank"
-            className="text-sm underline"
-            rel="noreferrer"
-          >
-            https://github.com/arisac/dapp-starter
-          </a>
-        </p>
-      </div>
-
       <div>
-        <h4 className="text-center text-sm font-medium">demo: ConnectWalletBtn Full</h4>
-        <div className="flex w-full flex-col items-center">
+        <div className="flex flex-col items-center w-full">
           <ConnectWallet />
         </div>
       </div>
 
-      <div>
-        <h4 className="text-center text-sm font-medium">demo: useModal (rainbowkit ^0.4.3)</h4>
-        <div className="flex w-full flex-col items-center">
-          {openConnectModal && (
-            <button
-              onClick={openConnectModal}
-              type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
-            >
-              useConnectModal
-            </button>
-          )}
-
-          {openAccountModal && (
-            <button
-              onClick={openAccountModal}
-              type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
-            >
-              useAccountModal
-            </button>
-          )}
-
-          {openChainModal && (
-            <button
-              onClick={openChainModal}
-              type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
-            >
-              useChainModal
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="w-full max-w-xl rounded-xl bg-sky-500/10 p-6 text-center">
+      <div className="w-full max-w-xl p-6 text-center rounded-xl bg-sky-500/10">
         <dl className={styles.dl}>
           <dt>Connector</dt>
           <dd>
@@ -137,7 +83,6 @@ function Main() {
                   {isNetworkLoading && pendingChainId === x.id && ' (switching)'}
                 </button>
               ))}
-            <ConnectWallet show="disconnected" />
           </dd>
           <dt>Account</dt>
           <dd className="break-all">{address ? `${address}` : 'n/a'}</dd>
@@ -154,7 +99,7 @@ function Main() {
 }
 
 function SignMsg() {
-  const [msg, setMsg] = useState('Dapp Starter')
+  const [msg, setMsg] = useState('Secret code')
   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
     message: msg,
   })
@@ -167,11 +112,11 @@ function SignMsg() {
   return (
     <>
       <p>
-        <input value={msg} onChange={e => setMsg(e.target.value)} className="rounded-lg p-1" />
+        <input value={msg} onChange={e => setMsg(e.target.value)} className="p-1 rounded-lg" />
         <button
           disabled={isLoading}
           onClick={() => signMsg()}
-          className="ml-1 rounded-lg bg-blue-500 py-1 px-2 text-white transition-all duration-150 hover:scale-105"
+          className="px-2 py-1 ml-1 text-white transition-all duration-150 bg-blue-500 rounded-lg hover:scale-105"
         >
           Sign
         </button>
